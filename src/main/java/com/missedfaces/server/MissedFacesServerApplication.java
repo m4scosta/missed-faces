@@ -18,8 +18,8 @@ public class MissedFacesServerApplication {
 
     Notification notification = new Notification();
     notification.setDetection(new Detection());
-    notification.setDestination("http://localhost:8080/test");
-    notification.setType(NotificationType.URL_POST);
+    notification.setDestination("marcos_costa.sjc@hotmail.com");
+    notification.setType(NotificationType.EMAIL);
 
     ctx.getBean(NotificationGateway.class).sendNotification(notification);
   }

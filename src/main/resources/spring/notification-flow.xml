@@ -39,4 +39,9 @@
 
     <int:channel id="emailNotificationChannel" />
 
+    <int:service-activator input-channel="emailNotificationChannel"
+                           ref="sendgridEmailSender"
+                           method="sendEmail"
+                           send-timeout="2000" />
+
 </beans>
