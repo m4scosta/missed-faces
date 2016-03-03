@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-http="http://www.springframework.org/schema/integration/http"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/integration
+       http://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/integration/http
+       http://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
+
+    <int:gateway id="notificationGateway"
+                 service-interface="com.missedfaces.server.integration.gateways.NotificationGateway" />
+
+    <int:channel id="notificationChannel" />
+
+    <int:router input-channel="notificationChannel" expression="payload.type">
+        <int:mapping value="URL_POST" channel="urlPostNotificationChannel" />
+        <int:mapping value="EMAIL" channel="emailNotificationChannel" />
+    </int:router>
+
+    <int:channel id="urlPostNotificationChannel" />
+
+    <int:transformer input-channel="urlPostNotificationChannel"
+                     output-channel="urlPostChannel"
+                     ref="urlPostNotificationTransformer"
+                     method="transform" />
+
+    <int:channel id="urlPostChannel" />
+
+    <int-http:outbound-gateway request-channel="urlPostChannel"
+                               url-expression="headers.get('URL')"
+                               http-method="POST"
+                               rest-template="restTemplate"
+                               reply-channel="nullChannel"
+                               expected-response-type="java.lang.String" />
+
+    <int:channel id="emailNotificationChannel" />
+
+</beans>
