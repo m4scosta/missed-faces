@@ -16,7 +16,6 @@ public class SendgridEmailSender implements EmailSender {
 
   @Override
   public void sendEmail(Message<Notification> message) {
-    System.out.println(API_KEY);
     SendGrid sendGrid = new SendGrid(API_KEY);
     SendGrid.Email email = new SendGrid.Email();
     email.setFrom("notification@missedfaces.com");

@@ -24,6 +24,6 @@ public @Data class Detector {
   @NotNull
   private Double longitude;
 
-  @OneToMany(mappedBy = "detector", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "detector", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private List<Detection> detections;
 }

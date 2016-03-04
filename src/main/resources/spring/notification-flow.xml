@@ -43,5 +43,4 @@
                            ref="sendgridEmailSender"
                            method="sendEmail"
                            send-timeout="2000" />
-
 </beans>

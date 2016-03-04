@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-http="http://www.springframework.org/schema/integration/http"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/integration
+       http://www.springframework.org/schema/integration/spring-integration.xsd
+       http://www.springframework.org/schema/integration/http
+       http://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
+
+    <int-http:inbound-channel-adapter channel="detectionDTO.channel"
+                                      path="/api/integration/detection"
+                                      supported-methods="POST"
+                                      request-payload-type="com.missedfaces.server.domain.dto.DetectionDto"
+                                      auto-startup="true">
+    </int-http:inbound-channel-adapter>
+
+    <int:channel id="detectionDTO.channel" datatype="com.missedfaces.server.domain.dto.DetectionDto">
+        <int:interceptors>
+            <int:wire-tap channel="logging.channel" />
+        </int:interceptors>
+    </int:channel>
+
+    <int:logging-channel-adapter id="logging.channel" level="INFO"
+                                 expression="'New detection received: ' + payload" />
+
+    <int:filter input-channel="detectionDTO.channel"
+                output-channel="faceValidated.channel"
+                expression="(payload.getFace() != null) and (payload.getFace().length > 0)" />
+
+    <int:channel id="faceValidated.channel" />
+
+    <int:filter input-channel="faceValidated.channel"
+                output-channel="validated.channel"
+                ref="detectorFilter" method="validateDetectorId" />
+
+    <int:channel id="validated.channel" />
+
+    <int:transformer input-channel="validated.channel"
+                     output-channel="detectionBean.channel"
+                     ref="detectionMapper"
+                     method="toBean" />
+
+    <int:channel id="detectionBean.channel" datatype="com.missedfaces.server.domain.beans.Detection" />
+
+    <int:service-activator input-channel="detectionBean.channel"
+                           ref="recognitionService"
+                           method="recognize" />
+</beans>
