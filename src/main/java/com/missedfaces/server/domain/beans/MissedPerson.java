@@ -4,10 +4,7 @@ import lombok.Data;
 import lombok.Getter;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -30,7 +27,7 @@ public @Data class MissedPerson {
   private Date missedDate;
 
   @NotNull
-  private Byte[] image; // TODO: make it a List
+  private byte[] image; // TODO: make it a List
 
   // TODO: verificar para que foi usado o counter
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -38,4 +35,9 @@ public @Data class MissedPerson {
   private Long counter;
 
   // TODO: fazer ligacao com o usuario
+  @ManyToOne(
+      targetEntity = User.class,
+      cascade = CascadeType.ALL,
+      optional = false)
+  private User user;
 }

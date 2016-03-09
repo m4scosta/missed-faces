@@ -6,5 +6,5 @@ public @Data class DetectionDto {
 
   private Long detectorId;
   private Long time;
-  private Byte[] face;
+  private byte[] face;
 }

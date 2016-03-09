@@ -22,14 +22,12 @@ public @Data class Detection {
   private Date time;
 
   @NotNull
-  private Byte[] image;
+  private byte[] image;
 
   @NotNull
-  @ManyToOne(targetEntity = MissedPerson.class, optional = false, fetch = FetchType.EAGER)
+  @ManyToOne(targetEntity = MissedPerson.class, optional = false)
   private MissedPerson person;
 
-  @ManyToOne(targetEntity = Detector.class, optional = false, fetch = FetchType.EAGER)
+  @ManyToOne(targetEntity = Detector.class, optional = false)
   private Detector detector;
-
-  // TODO: fazer ligacao com o usuario
 }

@@ -22,9 +22,12 @@ public class WebSecurityConfig {
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     auth.jdbcAuthentication()
         .dataSource(dataSource)
-        .withDefaultSchema()
-        .withUser("detector").password("123").roles("DETECTOR").and()
-        .withUser("user").password("123").roles("USER");
+        .usersByUsernameQuery(
+            "select username, password, enabled from users where username=?")
+        .authoritiesByUsernameQuery(
+            "select username, authority from authorities where username=?")
+        .withUser("detector").password("12345").roles("DETECTOR").and()
+        .withUser("user").password("12345").roles("USER");
   }
 
   @Configuration
@@ -36,14 +39,28 @@ public class WebSecurityConfig {
           .csrf().disable()
           .headers().frameOptions().disable()
           .and()
-          .authorizeRequests()
-          .anyRequest()
-          .permitAll();
 
-      // TODO: implement authenticated method
-//          .authenticated()
+          .formLogin()
+          .loginPage("/login")
+          .permitAll()
+          .and()
+
+          .logout()
+          .logoutUrl("/logout")
+          .logoutSuccessUrl("/login")
+          .invalidateHttpSession(true)
+          .permitAll()
+          .and()
+
+//          .authorizeRequests()
+//          .anyRequest().authenticated()
 //          .and()
-//          .httpBasic();
+
+          .authorizeRequests()
+          .antMatchers("/api/public/**").permitAll()
+//          .and()
+
+          ;
     }
   }
 
