@@ -7,13 +7,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public @Data class MissedPerson {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Getter
   private Long id;
 
   @NotNull
@@ -26,18 +26,28 @@ public @Data class MissedPerson {
   @NotNull
   private Date missedDate;
 
-  @NotNull
-  private byte[] image; // TODO: make it a List
+  @OneToMany(
+      targetEntity = MissedPersonImage.class,
+      fetch = FetchType.EAGER)
+  private List<MissedPersonImage> images;
 
   // TODO: verificar para que foi usado o counter
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  @Getter
   private Long counter;
 
-  // TODO: fazer ligacao com o usuario
-  @ManyToOne(
-      targetEntity = User.class,
-      cascade = CascadeType.ALL,
-      optional = false)
+  @ManyToOne(targetEntity = User.class)
   private User user;
+
+  @Override
+  public String toString() {
+    return "MissedPerson{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", bornDate=" + bornDate +
+        ", missedDate=" + missedDate +
+        ", images=" + images +
+        ", counter=" + counter +
+        ", user=" + user.getId() +
+        '}';
+  }
 }

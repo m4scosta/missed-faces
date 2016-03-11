@@ -12,24 +12,24 @@
        http://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
 
     <int-http:inbound-channel-adapter channel="detectionDTO.channel"
-                                      path="/api/integration/detection"
+                                      path="/api/detector/publish/detection"
                                       supported-methods="POST"
-                                      request-payload-type="com.missedfaces.server.domain.dto.DetectionDto"
+                                      request-payload-type="com.missedfaces.server.domain.dto.DetectionDTO"
                                       auto-startup="true">
     </int-http:inbound-channel-adapter>
 
-    <int:channel id="detectionDTO.channel" datatype="com.missedfaces.server.domain.dto.DetectionDto">
+    <int:channel id="detectionDTO.channel" datatype="com.missedfaces.server.domain.dto.DetectionDTO">
         <int:interceptors>
             <int:wire-tap channel="logging.channel" />
         </int:interceptors>
     </int:channel>
 
     <int:logging-channel-adapter id="logging.channel" level="INFO"
-                                 expression="'New detection received: ' + payload" />
+                                 expression="'New detection: ' + payload.getDetectorId() + ', ' + payload.getTime()" />
 
     <int:filter input-channel="detectionDTO.channel"
                 output-channel="faceValidated.channel"
-                expression="(payload.getFace() != null) and (payload.getFace().length > 0)" />
+                expression="payload.getFace() != null and payload.getFace().getData() != null and payload.getFace().getData().length > 0" />
 
     <int:channel id="faceValidated.channel" />
 
@@ -47,6 +47,42 @@
     <int:channel id="detectionBean.channel" datatype="com.missedfaces.server.domain.beans.Detection" />
 
     <int:service-activator input-channel="detectionBean.channel"
+                           output-channel="recognitionResult.channel"
                            ref="recognitionService"
-                           method="recognize" />
+                           method="tryToRecognizeDetectedFace" />
+
+    <int:channel id="recognitionResult.channel" />
+
+    <int:header-enricher input-channel="recognitionResult.channel"
+                         output-channel="recognitionResult2.channel">
+        <int:header name="detected" expression="payload.getPerson() != null" />
+    </int:header-enricher>
+
+    <int:channel id="recognitionResult2.channel" />
+
+    <int:header-value-router input-channel="recognitionResult2.channel"
+                             header-name="detected"
+                             default-output-channel="detectionToDiscard.channel">
+        <int:mapping value="true" channel="detectionToPersist.channel" />
+    </int:header-value-router>
+
+    <int:channel id="detectionToPersist.channel" />
+
+    <int:service-activator input-channel="detectionToPersist.channel"
+                           output-channel="detectionToNotify.channel"
+                           ref="detectionRepository"
+                           method="save" />
+
+    <int:channel id="detectionToNotify.channel" />
+
+    <int:transformer input-channel="detectionToNotify.channel"
+                     output-channel="notificationChannel"
+                     ref="detectionToNotificationTransformer"
+                     method="toNotification" />
+
+    <int:channel id="detectionToDiscard.channel" />
+
+    <int:logging-channel-adapter channel="detectionToDiscard.channel"
+                                 expression="'Detection face not recognized: ' + payload.getDetector().getId() + ', ' + payload.getTime() + '. ' + headers"
+                                 level="INFO" />
 </beans>

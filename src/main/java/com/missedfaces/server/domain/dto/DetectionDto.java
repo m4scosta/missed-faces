@@ -2,9 +2,8 @@ package com.missedfaces.server.domain.dto;
 
 import lombok.Data;
 
-public @Data class DetectionDto {
-
+public @Data class DetectionDTO {
   private Long detectorId;
   private Long time;
-  private byte[] face;
+  private FaceDTO face;
 }

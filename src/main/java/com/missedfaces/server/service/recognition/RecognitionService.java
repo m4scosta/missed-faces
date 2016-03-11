@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public interface RecognitionService {
 
-  int recognize(Detection detection) throws IOException;
-  void update(MissedPerson person) throws IOException ;
+  void train() throws IOException;
+  Detection tryToRecognizeDetectedFace(Detection detection) throws IOException;
+  void updateTraining(MissedPerson person) throws IOException ;
 }
