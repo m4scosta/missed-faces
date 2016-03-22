@@ -1,6 +1,9 @@
-package com.missedfaces.server.service.recognition;
+package com.missedfaces.server.service.recognition.impl;
 
+import com.missedfaces.server.service.recognition.ImageOptimizer;
+import com.missedfaces.server.service.recognition.Recognizer;
 import org.bytedeco.javacpp.opencv_imgproc;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -22,6 +25,9 @@ public class OpencvRecognizer implements Recognizer {
   private boolean trained = false;
 
   private FaceRecognizer recognizer = createEigenFaceRecognizer(80, 6000);
+
+  @Autowired
+  private ImageOptimizer optimizer;
 
   @Override
   public int recognize(byte[] image) throws IOException {
@@ -69,7 +75,9 @@ public class OpencvRecognizer implements Recognizer {
   private MatVector toCvImages(byte[][] images) throws IOException {
     MatVector cvImages = new MatVector(images.length);
     for (int i = 0; i < images.length; i++) {
-      cvImages.put(i, matFromByteArray(images[i]));
+      Mat image = matFromByteArray(images[i]);
+      optimizer.optimize(image);
+      cvImages.put(i, image);
     }
     return cvImages;
   }

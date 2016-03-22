@@ -1,9 +1,11 @@
-package com.missedfaces.server.service.recognition;
+package com.missedfaces.server.service.recognition.impl;
 
 import com.google.common.collect.Lists;
 import com.missedfaces.server.domain.beans.Detection;
 import com.missedfaces.server.domain.beans.MissedPerson;
 import com.missedfaces.server.domain.repositories.MissedPersonRepository;
+import com.missedfaces.server.service.recognition.RecognitionService;
+import com.missedfaces.server.service.recognition.Recognizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
