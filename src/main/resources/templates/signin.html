@@ -10,7 +10,7 @@
     <meta name="author" content="" />
     <link rel="shortcut icon" href="/static/img/favicon.png" />
 
-    <title>Entrar | Missed Faces</title>
+    <title>Cadastrar-se | Missed Faces</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.css" rel="stylesheet" />
@@ -24,29 +24,12 @@
 
 <body>
 
-<!-- Fixed navbar -->
-<div class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/"><b>MISSED FACES</b></a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/login">ENTRE</a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</div>
+<div th:include="fragments/header :: header"></div>
 
 <div class="container">
     <div class="row mt centered">
         <div class="col-lg-6 col-lg-offset-3">
-            <h1>Entre</h1>
+            <h1>Cadastre-se</h1>
         </div>
     </div><!-- /row -->
     <hr />
@@ -61,8 +44,12 @@
                 <input type="password" name="password" class="form-control" id="password" />
             </div>
             <div class="form-group">
+                <label class="col-lg-4 control-label">Confirmation: </label>
+                <input type="password" name="password2" class="form-control" id="password2" />
+            </div>
+            <div class="form-group">
                 <div class="col-lg-offset-4">
-                    <button type="submit" class="btn btn-default">Entrar</button>
+                    <button type="submit" class="btn btn-default">Cadastrar-se</button>
                 </div>
             </div>
         </form>
@@ -82,10 +69,13 @@
         var $form = $("#signin-form");
         var $email = $("#email");
         var $password = $("#password");
+        var $password2 = $("#password2");
+
+        $email.val(getURLParameter("email"));
 
         $form.on("submit", function (ev) {
             ev.preventDefault();
-            if (validateFieldsLogin($email, $password)) {
+            if (validateFieldsSignin($email, $password, $password2)) {
                 // TODO: do post
             }
         });

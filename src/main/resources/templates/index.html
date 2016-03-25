@@ -1,19 +1,55 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" >
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <title>Home</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="/static/img/favicon.png" />
+
+    <title>Missed Faces</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/main.css" rel="stylesheet" />
+
+    <!-- Fonts from Google Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css' />
 </head>
+
 <body>
 
-Hello <span sec:authentication="name">Unknown</span>
+<div th:include="fragments/header :: header"></div>
 
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Logout" />
-</form>
+<div id="headerwrap" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <h1>Encontre pessoas<br/>
+                    importantes para você.</h1>
+                <form class="form-inline" role="form" method="GET" th:action="@{cadastrarse}">
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Digite seu e-mail" autofocus="true"/>
+                    </div>
+                    <button type="submit" class="btn btn-warning btn-lg">Cadastre-se!</button>
+                </form>
+            </div><!-- /col-lg-6 -->
+            <div class="col-lg-5">
+                <img class="img-responsive" src="/static/img/family.png" alt="" />
+            </div><!-- /col-lg-6 -->
+        </div><!-- /row -->
+    </div><!-- /container -->
+</div><!-- /headerwrap -->
 
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
 </body>
 </html>
