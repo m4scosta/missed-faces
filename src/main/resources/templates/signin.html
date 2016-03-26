@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -58,6 +58,26 @@
 
 <div th:include="fragments/footer :: footer"></div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Sucesso!</h4>
+            </div>
+            <div class="modal-body">
+                Cadastro realizado com sucesso! Entre para começar.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="goto-signin">Entrar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
@@ -65,19 +85,39 @@
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/validation.js"></script>
 <script>
+    function getFormData($form) {
+        var unindexed_array = $form.serializeArray();
+        var indexed_array = {};
+        $.map(unindexed_array, function (n, i) {
+            indexed_array[n['name']] = n['value'];
+        });
+        return indexed_array;
+    }
     $(document).ready(function () {
         var $form = $("#signin-form");
         var $email = $("#email");
         var $password = $("#password");
         var $password2 = $("#password2");
+        var $gotoSignInBtn = $("#goto-signin");
 
         $email.val(getURLParameter("email"));
 
         $form.on("submit", function (ev) {
             ev.preventDefault();
             if (validateFieldsSignin($email, $password, $password2)) {
-                // TODO: do post
+                var data = getFormData($form);
+                $.post("/cadastrarse", data)
+                        .done(function () {
+                            $("#myModal").modal("show");
+                        })
+                        .fail(function () {
+                            alert("ERROR");
+                        });
             }
+        });
+
+        $gotoSignInBtn.on("click", function () {
+            window.location = "/entrar?email=" + $email.val();
         });
     })
 </script>

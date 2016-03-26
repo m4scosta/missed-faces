@@ -1,4 +1,4 @@
-package com.missedfaces.server.integration.rest;
+package com.missedfaces.server.api;
 
 import com.missedfaces.server.domain.beans.Authority;
 import com.missedfaces.server.domain.beans.User;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/public")
+@RequestMapping(value = "/cadastrarse")
 public class AccountsController {
 
   @Autowired
@@ -23,7 +23,12 @@ public class AccountsController {
   @Autowired
   private AuthorityRepository authorityRepository;
 
-  @RequestMapping(value = "/signup", method = RequestMethod.POST)
+  @RequestMapping(value = "/", method = RequestMethod.GET)
+  public String signUp() {
+    return "cadastrarse";
+  }
+
+  @RequestMapping(value = "/", method = RequestMethod.POST)
   @Transactional
   public ResponseEntity<Void> signUp(@RequestBody User user) {
     userRepository.save(user);

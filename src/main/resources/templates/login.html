@@ -48,6 +48,10 @@
             <div class="form-group">
                 <div class="col-lg-offset-4">
                     <button type="submit" id="login-submit" class="btn btn-default">Entrar</button>
+                    <span style="margin-left: 10px">ou</span>
+                    <a th:href="@{/cadastrarse}" style="margin-left: 10px">
+                        <button type="button" class="btn btn-default">Cadastrar-se</button>
+                    </a>
                 </div>
             </div>
             <div class="has-error" th:if="${param.error}">
