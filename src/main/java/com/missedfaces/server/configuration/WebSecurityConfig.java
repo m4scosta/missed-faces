@@ -26,8 +26,6 @@ public class WebSecurityConfig {
             "select username, password, enabled from users where username=?")
         .authoritiesByUsernameQuery(
             "select username, authority from authorities where username=?");
-//        .withUser("detector").password("12345").roles("DETECTOR").and()
-//        .withUser("user").password("12345").roles("USER");
   }
 
   @Configuration
@@ -41,13 +39,13 @@ public class WebSecurityConfig {
           .and()
 
           .formLogin()
-          .loginPage("/login")
+          .loginPage("/entrar")
           .permitAll()
           .and()
 
           .logout()
           .logoutUrl("/logout")
-          .logoutSuccessUrl("/login")
+          .logoutSuccessUrl("/entrar")
           .invalidateHttpSession(true)
           .permitAll()
           .and()

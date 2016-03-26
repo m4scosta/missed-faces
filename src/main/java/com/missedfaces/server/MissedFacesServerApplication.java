@@ -1,14 +1,8 @@
 package com.missedfaces.server;
 
 import com.google.common.collect.Lists;
-import com.missedfaces.server.domain.beans.Detector;
-import com.missedfaces.server.domain.beans.MissedPerson;
-import com.missedfaces.server.domain.beans.MissedPersonImage;
-import com.missedfaces.server.domain.beans.User;
-import com.missedfaces.server.domain.repositories.DetectorRepository;
-import com.missedfaces.server.domain.repositories.MissedPersonImageRepository;
-import com.missedfaces.server.domain.repositories.MissedPersonRepository;
-import com.missedfaces.server.domain.repositories.UserRepository;
+import com.missedfaces.server.domain.beans.*;
+import com.missedfaces.server.domain.repositories.*;
 import com.missedfaces.server.service.recognition.RecognitionService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -33,6 +27,7 @@ public class MissedFacesServerApplication {
   CommandLineRunner commandLineRunner(RecognitionService recognitionService,
                                       DetectorRepository detectorRepository,
                                       UserRepository userRepository,
+                                      AuthorityRepository authorityRepository,
                                       MissedPersonRepository missedPersonRepository,
                                       MissedPersonImageRepository missedPersonImageRepository) {
     return args -> {
@@ -45,10 +40,15 @@ public class MissedFacesServerApplication {
       detectorRepository.save(detector);
 
       User user = new User();
-      user.setUsername("marcos");
+      user.setUsername("marcos_costa.sjc@hotmail.com");
       user.setPassword("1234");
       user.setEnabled(true);
       userRepository.save(user);
+
+      Authority authority = new Authority();
+      authority.setUsername(user.getUsername());
+      authority.setAuthority("ROLE_ADMIN");
+      authorityRepository.save(authority);
 
       user = userRepository.findAll().iterator().next();
 
