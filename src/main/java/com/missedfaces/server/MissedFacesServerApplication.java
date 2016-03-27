@@ -28,6 +28,7 @@ public class MissedFacesServerApplication {
                                       DetectorRepository detectorRepository,
                                       UserRepository userRepository,
                                       AuthorityRepository authorityRepository,
+                                      DetectionRepository detectionRepository,
                                       MissedPersonRepository missedPersonRepository,
                                       MissedPersonImageRepository missedPersonImageRepository) {
     return args -> {
@@ -35,8 +36,8 @@ public class MissedFacesServerApplication {
       // TODO: remove
       Detector detector = new Detector();
       detector.setDescription("");
-      detector.setLatitude(123123.);
-      detector.setLongitude(123123.);
+      detector.setLatitude(-23.1396409);
+      detector.setLongitude(-45.9117957);
       detectorRepository.save(detector);
 
       User user = new User();
@@ -68,6 +69,14 @@ public class MissedFacesServerApplication {
       missedPerson.setImages(Lists.newArrayList(img1, img2, img3, img4));
 
       missedPersonRepository.save(missedPerson);
+
+      Detection detection = new Detection();
+      detection.setPerson(missedPerson);
+      detection.setTime(new Date());
+      detection.setDetector(detector);
+      detection.setImage(img3.getData());
+      detection.setReceiveTime(new Date());
+      detectionRepository.save(detection);
 
       recognitionService.train();
     };

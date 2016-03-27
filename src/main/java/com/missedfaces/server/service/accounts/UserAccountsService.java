@@ -17,13 +17,13 @@ public class UserAccountsService implements AccountsService {
     com.missedfaces.server.domain.beans.User user = null;
     if (isAuthenticated()) {
       User securityUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-      user = userRepository.findOne(securityUser.getUsername());
+      user = userRepository.getByUsername(securityUser.getUsername());
     }
     return user;
   }
 
   @Override
   public boolean isAuthenticated() {
-    return SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+    return !SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser");
   }
 }
