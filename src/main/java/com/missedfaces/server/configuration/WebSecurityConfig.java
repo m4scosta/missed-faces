@@ -40,6 +40,7 @@ public class WebSecurityConfig {
 
           .formLogin()
           .loginPage("/entrar")
+          .defaultSuccessUrl("/home")
           .permitAll()
           .and()
 
@@ -50,15 +51,12 @@ public class WebSecurityConfig {
           .permitAll()
           .and()
 
-//          .authorizeRequests()
-//          .anyRequest().authenticated()
-//          .and()
+          .authorizeRequests()
+          .antMatchers("/api/public/**", "/static/**", "/", "/cadastrarse").permitAll()
+          .and()
 
           .authorizeRequests()
-          .antMatchers("/api/public/**").permitAll()
-//          .and()
-
-          ;
+          .anyRequest().authenticated();
     }
   }
 

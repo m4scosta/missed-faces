@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
 <head></head>
 <body th:fragment="header">
 <!-- Fixed navbar -->
@@ -16,8 +17,15 @@
             <a class="navbar-brand" th:href="@{/}"><b>MISSED FACES</b></a>
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a th:href="@{entrar}">ENTRE</a></li>
+            <ul class="nav navbar-nav navbar-right" sec:authorize="!isAuthenticated()">
+                <li><a th:href="@{entrar}">ENTRAR</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" sec:authorize="isAuthenticated()">
+                <li><a th:href="@{/home}">HOME</a></li>
+                <li><a th:href="@{/desaparecidos}">DESAPARECIDOS</a></li>
+                <li><a th:href="@{/notificacoes}">NOTIFICAÇÕES</a></li>
+                <li><a th:href="@{/encontrados}">ENCONTRADOS</a></li>
+                <li><a th:href="@{/logout}">SAIR</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>

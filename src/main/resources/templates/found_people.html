@@ -11,7 +11,7 @@
     <meta name="author" content=""/>
     <link rel="shortcut icon" href="/static/img/favicon.png"/>
 
-    <title>Entrar | Missed Faces</title>
+    <title>Encontrados | Missed Faces</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.css" rel="stylesheet"/>
@@ -36,7 +36,7 @@
     <hr/>
     <div class="row mt">
         <ul>
-            <li th:each="detection : ${detections}"><a th:href="@{'/pessoas/encontradas/' + ${detection.id}}"
+            <li th:each="detection : ${detections}"><a th:href="@{'/encontrados/detalhes/' + ${detection.id}}"
                                                        th:text="${detection.person.name}"></a></li>
         </ul>
     </div><!-- /row -->
