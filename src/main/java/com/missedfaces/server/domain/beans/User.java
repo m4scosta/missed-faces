@@ -29,11 +29,21 @@ public class User {
   @NotNull
   private boolean enabled;
 
-  @Cascade(value = CascadeType.ALL)
+  @Cascade(value = CascadeType.REMOVE)
   @OneToMany(targetEntity = MissedPerson.class, mappedBy = "user", fetch = FetchType.EAGER)
   private List<MissedPerson> missedPersons;
 
-  @Cascade(value = CascadeType.ALL)
+  @Cascade(value = CascadeType.REMOVE)
   @OneToMany(targetEntity = Notification.class, mappedBy = "user", fetch = FetchType.EAGER)
   private List<Notification> notifications;
+
+  @Override
+  public String toString() {
+    return "User{" +
+        "enabled=" + enabled +
+        ", password='" + password + '\'' +
+        ", username='" + username + '\'' +
+        ", id=" + id +
+        '}';
+  }
 }

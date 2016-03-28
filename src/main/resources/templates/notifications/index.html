@@ -60,9 +60,9 @@
                             Selecione&nbsp;<span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dLabel">
-                            <li><a th:href="@{'/notificacoes/editar/' + ${notification.id}}"><span
-                                    class="glyphicon glyphicon-edit"></span>&nbsp;Editar</a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-remove"></span>&nbsp;Remover</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-edit"></span>&nbsp;Editar</a></li>
+                            <li><a th:href="@{'/notificacoes/deletar/' + ${notification.id}}" data-fetch="async"><span
+                                    class="glyphicon glyphicon-remove"></span>&nbsp;Remover</a></li>
                         </ul>
                     </div>
                 </td>
@@ -79,5 +79,22 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script type="application/javascript" src="/static/js/jquery-1.10.2.min.js"></script>
 <script type="application/javascript" src="/static/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("[data-fetch=async]").click(function (e) {
+            e.preventDefault();
+            var $el = $(this);
+            if (confirm("Deseja realmente deletar?")) {
+                $.ajax({
+                    url: $el.attr("href"),
+                    type: "DELETE",
+                    success: function () {
+                        $el.closest("tr").remove();
+                    }
+                })
+            }
+        });
+    });
+</script>
 </body>
 </html>
