@@ -43,7 +43,7 @@
         </div>
         <div class="panel panel-info">
             <div class="panel-heading">NOTIFICAÇÕES</div>
-            <div class="panel-body">N Cadastradas</div>
+            <div class="panel-body" th:text="${notificationsCount} + ' cadastrada(s)'"></div>
             <div class="panel-footer clearfix">
                 <a class="pull-right" th:href="@{/notificacoes}">Ver cadastros</a>
             </div>

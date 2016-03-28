@@ -37,7 +37,7 @@
         <form id="signin-form" role="form" class="col-lg-6 col-lg-offset-3 form-horizontal" method="POST" action=".">
             <div class="form-group">
                 <label class="col-lg-4 control-label">E-mail: </label>
-                <input type="email" name="email" id="email" class="form-control" autofocus="autofocus" />
+                <input type="email" name="username" id="email" class="form-control" autofocus="autofocus"/>
             </div>
             <div class="form-group">
                 <label class="col-lg-4 control-label">Password: </label>
@@ -85,14 +85,6 @@
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/validation.js"></script>
 <script>
-    function getFormData($form) {
-        var unindexed_array = $form.serializeArray();
-        var indexed_array = {};
-        $.map(unindexed_array, function (n, i) {
-            indexed_array[n['name']] = n['value'];
-        });
-        return indexed_array;
-    }
     $(document).ready(function () {
         var $form = $("#signin-form");
         var $email = $("#email");
@@ -106,13 +98,21 @@
             ev.preventDefault();
             if (validateFieldsSignin($email, $password, $password2)) {
                 var data = getFormData($form);
-                $.post("/cadastrarse", data)
-                        .done(function () {
-                            $("#myModal").modal("show");
-                        })
-                        .fail(function () {
-                            alert("ERROR");
-                        });
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: "/cadastrarse",
+                    type: "POST",
+                    data: JSON.stringify(data),
+                    success: function () {
+                        $("#myModal").modal("show");
+                    },
+                    error: function () {
+                        alert("ERROR");
+                    }
+                });
             }
         });
 

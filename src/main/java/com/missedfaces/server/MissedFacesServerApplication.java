@@ -2,6 +2,7 @@ package com.missedfaces.server;
 
 import com.google.common.collect.Lists;
 import com.missedfaces.server.domain.beans.*;
+import com.missedfaces.server.domain.enums.NotificationType;
 import com.missedfaces.server.domain.repositories.*;
 import com.missedfaces.server.service.recognition.RecognitionService;
 import org.springframework.boot.CommandLineRunner;
@@ -29,6 +30,7 @@ public class MissedFacesServerApplication {
                                       UserRepository userRepository,
                                       AuthorityRepository authorityRepository,
                                       DetectionRepository detectionRepository,
+                                      NotificationRepository notificationRepository,
                                       MissedPersonRepository missedPersonRepository,
                                       MissedPersonImageRepository missedPersonImageRepository) {
     return args -> {
@@ -77,6 +79,12 @@ public class MissedFacesServerApplication {
       detection.setImage(img3.getData());
       detection.setReceiveTime(new Date());
       detectionRepository.save(detection);
+
+      Notification notification = new Notification();
+      notification.setUser(user);
+      notification.setTarget("marcos_costa.sjc@hotmail.com");
+      notification.setType(NotificationType.EMAIL);
+      notificationRepository.save(notification);
 
       recognitionService.train();
     };

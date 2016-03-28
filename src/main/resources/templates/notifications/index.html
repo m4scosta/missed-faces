@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="/static/img/favicon.png"/>
+
+    <title>Notificações | Missed Faces</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet"/>
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/main.css" rel="stylesheet"/>
+
+    <!-- Fonts from Google Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'/>
+</head>
+
+<body>
+
+<div th:include="fragments/header :: header"></div>
+
+<div class="container">
+    <div class="row mt centered">
+        <div class="col-lg-6 col-lg-offset-3">
+            <h1>Notificações</h1>
+        </div>
+    </div><!-- /row -->
+    <hr/>
+    <div class="row mt" style="background: white; box-shadow: darkgray 2px 2px 5px; padding: 10px">
+        <div class="clearfix">
+            <a th:href="@{/notificacoes/novo}" role="button" class="btn btn-default pull-right"><span
+                    class="glyphicon glyphicon-plus"></span>&nbsp;Novo</a>
+        </div>
+        <br/>
+        <table class="table table-hover table-bordered" style="margin-bottom: 0">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Tipo</th>
+                <th>Destino</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="notification : ${notifications}">
+                <th scope="row">1</th>
+                <td th:text="${notification.type}"></td>
+                <td th:text="${notification.target}"></td>
+                <td>
+                    <div class="dropdown">
+                        <button id="dLabel" class="dropdown-toggle btn btn-default" type="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            Selecione&nbsp;<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                            <li><a th:href="@{'/notificacoes/editar/' + ${notification.id}}"><span
+                                    class="glyphicon glyphicon-edit"></span>&nbsp;Editar</a></li>
+                            <li><a href="#"><span class="glyphicon glyphicon-remove"></span>&nbsp;Remover</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div><!-- /row -->
+</div><!-- /container -->
+
+<div th:include="fragments/footer :: footer"></div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="application/javascript" src="/static/js/jquery-1.10.2.min.js"></script>
+<script type="application/javascript" src="/static/js/bootstrap.min.js"></script>
+</body>
+</html>

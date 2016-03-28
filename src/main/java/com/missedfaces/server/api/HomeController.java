@@ -2,7 +2,6 @@ package com.missedfaces.server.api;
 
 import com.missedfaces.server.domain.beans.User;
 import com.missedfaces.server.domain.repositories.DetectionRepository;
-import com.missedfaces.server.domain.repositories.MissedPersonRepository;
 import com.missedfaces.server.service.accounts.AccountsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -19,18 +18,17 @@ public class HomeController {
   private AccountsService accountsService;
 
   @Autowired
-  private MissedPersonRepository missedPersonRepository;
-
-  @Autowired
   private DetectionRepository detectionRepository;
 
   @RequestMapping(value = "/home", method = RequestMethod.GET)
   private String home(Model model) {
     User user = accountsService.currentUser();
-    int registeredCount = missedPersonRepository.findByUser(user).size();
+    int registeredCount = user.getMissedPersons().size();
     int foundCount = detectionRepository.findByPersonUser(user).size();
+    int notificationsCount = user.getNotifications().size();
     model.addAttribute("missedPersonCount", registeredCount);
     model.addAttribute("personFoundCount", foundCount);
+    model.addAttribute("notificationsCount", notificationsCount);
     return "home";
   }
 }
