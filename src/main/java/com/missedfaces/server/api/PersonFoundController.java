@@ -28,13 +28,13 @@ public class PersonFoundController {
   public String detections(Model model) {
     List<Detection> detections = detectionRepository.findByPersonUser(accountsService.currentUser());
     model.addAttribute("detections", detections);
-    return "found_people";
+    return "found_people/index";
   }
 
   @RequestMapping(value = "/detalhes/{personId}", method = RequestMethod.GET)
   public String details(@PathVariable Long personId, Model model) {
     Detection detection = detectionRepository.getByIdAndPersonUser(personId, accountsService.currentUser());
     model.addAttribute("detection", detection);
-    return "found_people_details";
+    return "found_people/details";
   }
 }

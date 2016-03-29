@@ -30,15 +30,35 @@
 <div class="container">
     <div class="row mt centered">
         <div class="col-lg-6 col-lg-offset-3">
-            <h1>Entre</h1>
+            <h1>Encontrados</h1>
         </div>
     </div><!-- /row -->
     <hr/>
-    <div class="row mt">
-        <ul>
-            <li th:each="detection : ${detections}"><a th:href="@{'/encontrados/detalhes/' + ${detection.id}}"
-                                                       th:text="${detection.person.name}"></a></li>
-        </ul>
+    <div class="row mt" style="background: white; box-shadow: darkgray 2px 2px 5px; padding: 10px">
+        <br/>
+        <table class="table table-hover table-bordered" style="margin-bottom: 0">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Data</th>
+                <th>Local</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="detection : ${detections}">
+                <td th:text="${detection.person.name}"></td>
+                <td th:text="${detection.time}"></td>
+                <td th:text="'Lat: ' + ${detection.detector.latitude} + ', Lng: ' + ${detection.detector.longitude}"></td>
+                <td>
+                    <a th:href="@{'/encontrados/detalhes/' + ${detection.id}}">
+                        <button class="btn btn-default">Ver detalhes <span
+                                class="glyphicon glyphicon-chevron-right"></span></button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div><!-- /row -->
 </div><!-- /container -->
 
