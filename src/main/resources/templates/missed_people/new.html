@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="shortcut icon" href="/static/img/favicon.png"/>
+
+    <title>Desaparecidos | Missed Faces</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet"/>
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/main.css" rel="stylesheet"/>
+
+    <!-- Fonts from Google Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'/>
+</head>
+
+<body>
+
+<div th:include="fragments/header :: header"></div>
+
+<div class="container">
+    <div class="row mt centered">
+        <div class="col-lg-6 col-lg-offset-3">
+            <h1>Novo Desaparecido</h1>
+        </div>
+    </div><!-- /row -->
+    <hr/>
+    <div class="row mt">
+        <form id="new-form" role="form" class="col-lg-6 col-lg-offset-3 form-horizontal" method="POST"
+              th:action="@{/desaparecidos/novo}">
+            <div class="form-group">
+                <label for="name" class="col-lg-4 control-label">Nome: </label>
+                <input type="text" id="name" name="name" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="born_date" class="col-lg-4 control-label">Nascimento: </label>
+                <input type="date" id="born_date" name="born_date" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="missed_date" class="col-lg-4 control-label">Desaparecimento: </label>
+                <input type="date" id="missed_date" name="missed_date" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="images" class="col-lg-4 control-label">Imagens: </label>
+                <input type="file" id="images" name="images[]" class="form-control" multiple="multiple" />
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-4">
+                    <button type="submit" id="login-submit" class="btn btn-default">Salvar</button>
+                </div>
+            </div>
+            <div class="has-error" th:if="${param.error}">
+                <small class="col-lg-offset-4 control-label">E-mail ou senha inválidos.</small>
+            </div>
+        </form>
+    </div><!-- /row -->
+</div><!-- /container -->
+
+<div th:include="fragments/footer :: footer"></div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="application/javascript" src="/static/js/jquery-1.10.2.min.js"></script>
+<script type="application/javascript" src="/static/js/bootstrap.min.js"></script>
+<script type="application/javascript" src="/static/js/validation.js"></script>
+<script>
+    $(document).ready(function () {
+        var $form = $("#new-form");
+        var $images = $("#images");
+        $form.submit(function (e) {
+            e.preventDefault();
+            var data = getFormData($form);
+            var formData = new FormData();
+            var imageFiles = $images[0].files;
+            formData.append("name", data["name"]);
+            formData.append("bornDate", data["born_date"]);
+            formData.append("missedDate", data["missed_date"]);
+            $.each(imageFiles, function (i, image) {
+                formData.append("images[]", image);
+            });
+            $.ajax({
+                url: "/desaparecidos/novo",
+                type: "POST",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function () {
+                    window.location.replace("/desaparecidos");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

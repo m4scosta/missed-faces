@@ -13,4 +13,6 @@ public interface MissedPersonRepository extends CrudRepository<MissedPerson, Lon
   MissedPerson getByCounter(Long counter);
 
   List<MissedPerson> findByUser(User user);
+
+  MissedPerson findByIdAndUser(Long id, User user);
 }

@@ -59,6 +59,6 @@ public class RecognitionServiceImpl implements RecognitionService {
       images[index.get()] = i.getData();
       labels[index.getAndIncrement()] = person.getId().intValue();
     });
-    recognizer.update(images, labels);
+    recognizer.train(images, labels);
   }
 }
